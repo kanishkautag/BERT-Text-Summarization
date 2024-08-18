@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Answering with BERT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Question Answering with BERT</h1>
+        <form method="POST">
+            <div class="form-group">
+                <label for="passage">Passage:</label>
+                <textarea id="passage" name="passage" rows="6" required>{{ request.form.get('passage', '') }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="question">Question:</label>
+                <input type="text" id="question" name="question" required value="{{ request.form.get('question', '') }}">
+            </div>
+            <div class="form-group">
+                <label for="chunk-size">Chunk Size (Default is 400):</label>
+                <input type="number" id="chunk-size" name="chunk-size" value="{{ request.form.get('chunk-size', 400) }}">
+            </div>
+            <div class="form-group">
+                <button type="submit">Get Answer</button>
+            </div>
+        </form>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if answer %}
+            <div class="result">
+                <h2>Answer:</h2>
+                <p>{{ answer }}</p>
+                
+                <h2>Highlighted Chunks:</h2>
+                {% for chunk in highlighted_chunks %}
+                    <div class="chunk">{{ chunk }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
